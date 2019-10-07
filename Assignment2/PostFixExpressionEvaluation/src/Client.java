@@ -21,6 +21,7 @@ public class Client {
 		JPanel btnpnl = new JPanel(new BorderLayout());
 		frame = new JFrame("Postfix Evaluator");
 		table = new JTable(tableModel);
+		table.setRowHeight(25);
 		JScrollPane sp = new JScrollPane(table);
 		tblpnl.add(sp);
 		JButton toggleView = new JButton("Toggle View");
@@ -43,6 +44,7 @@ public class Client {
 		frame.add(tblpnl, BorderLayout.CENTER);
 		frame.add(btnpnl, BorderLayout.SOUTH);
 		frame.setSize(800, 200);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 }
