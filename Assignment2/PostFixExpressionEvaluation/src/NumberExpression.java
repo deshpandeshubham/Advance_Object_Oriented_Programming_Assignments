@@ -13,5 +13,4 @@ public class NumberExpression implements PostfixExpression {
 	public double interpret() {
 		return number;
 	}
-
 }

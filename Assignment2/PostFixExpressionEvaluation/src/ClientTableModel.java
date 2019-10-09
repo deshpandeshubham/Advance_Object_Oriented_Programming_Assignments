@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 import javax.swing.table.AbstractTableModel;
 
 public class ClientTableModel extends AbstractTableModel {
