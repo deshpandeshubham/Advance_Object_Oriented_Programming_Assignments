@@ -6,7 +6,10 @@ public class NumberExpression implements PostfixExpression {
 	}
 
 	public NumberExpression(String s) {
-		number = Double.parseDouble(s);
+		try{
+			number = Double.parseDouble(s);;
+		}
+		catch(NumberFormatException exception){}
 	}
 
 	@Override

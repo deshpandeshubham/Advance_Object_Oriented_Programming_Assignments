@@ -13,19 +13,23 @@ import javax.swing.*;
 
 public class Client {
 	
-	public static ClientTableModel tableModel = new ClientTableModel();
-	public static JTable table;
-	public boolean isEquationView = false;
-	public JFrame frame;
-	public static Context context = new Context();
+	static ClientTableModel tableModel = new ClientTableModel();
+	static JTable table;
+	static boolean isEquationView = false;
+	JFrame frame;
+	static Context context = new Context();
 	HashMap<Integer, String> previousValues = new HashMap<Integer, String>();
 	boolean isCellValueChanged = false;
+	static boolean isUndoClicked = false;
 	int[] dependentCellsIndex = new int[9];
 	EvaluateExpression eval = new EvaluateExpression();
+	static boolean isToggleClicked = false;
+	static boolean isObserver = false;
+	int[][] arr = instantiateDependencyMatrix();
 	
 	public void setupTable() {
 		JPanel tblpnl = new JPanel(new BorderLayout());
-		JPanel btnpnl = new JPanel(new BorderLayout());
+		JPanel btnpnl = new JPanel(new FlowLayout());
 		frame = new JFrame();
 		table = new JTable(tableModel);
 		frame.setTitle("Equation View");
@@ -37,33 +41,48 @@ public class Client {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				isToggleClicked = true;
 				if(isEquationView) {
 					frame.setTitle("Equation View");
 					previousValues.putAll(context.expressionString);
 					toggleEquationView();
 					isEquationView = false;
 				}
-				else {
-					/*if(!isCellValueChanged)
-						instantiateDependencyMatrix();
+				else {						
 					int i=0;
 					for(int key : previousValues.keySet()) {
 						if(!(context.values.get(key).equals(previousValues.get(key)))) {
 							System.out.println("Value changed at : " + key);
 							isCellValueChanged = true;
 							dependentCellsIndex[i] = key;
-							notifyObserver(dependentCellsIndex);
 							i++;
 						}
-					}*/
+					}
 					frame.setTitle("Value View");
+					instantiateDependencyMatrix();
+					if(isCellValueChanged) {
+						notifyObserver();
+						isCellValueChanged = false;
+					}
 					toggleValueView();
 					isEquationView = true;
 				}
+				isToggleClicked = false;
 			}
 		}); 
 		
+		JButton undo = new JButton("Undo");
+		undo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				isUndoClicked = true;
+				Client.context.restorePreviousState();
+				isUndoClicked = false;
+			}
+		});
+		
 		btnpnl.add(toggleView);
+		btnpnl.add(undo);
 		frame.add(tblpnl, BorderLayout.CENTER);
 		frame.add(btnpnl, BorderLayout.SOUTH);
 		frame.setSize(800, 200);
@@ -81,11 +100,13 @@ public class Client {
 				System.out.println("Value at "+key+" in expression map : "+ context.expressionString.get(key));
 				value = getValueExpression(value);
 				System.out.println("Value Expression After Conversion----->"+value);
+				Client.context.dependentCellsSet = new HashSet<String>();
 			}
 			Double res = eval.getResult(value.trim());
 			context.values.put(key, res.toString());
 			tableModel.setValueAt(res.toString(), 0, key);
 		}
+		context.saveCellState();
 	}
 
 	public void toggleEquationView() {
@@ -96,23 +117,13 @@ public class Client {
 		}
 	}
 
-	/*public String getValueExpression(Integer index, String expression) {
-		String[] alphabets = expression.split(" ");
-		String finalString = "";
-		for(String s : alphabets) {
-			if(s.matches("[A-I]")) 
-				finalString = finalString + " " + context.getValue(((int)(s.charAt(0) - 65)));
-			else 
-				finalString = finalString + " " + s;
-		}
-		return finalString;
-	}*/
-	
-	public String getValueExpression(String expression) {
+	public static String getValueExpression(String expression) {
 		String[] alphabets = expression.split(" ");
 		for(int i=0;i<alphabets.length;i++) {
-			if(alphabets[i].matches("[A-I]")) 
+			if(alphabets[i].matches("[A-I]")) {
+				isObserver = true;
 				alphabets[i] = getValueExpression(context.getValue(((int)(alphabets[i].charAt(0) - 65))));
+			}
 			else
 				continue;
 		}
@@ -121,7 +132,7 @@ public class Client {
 	
 	public int[][] instantiateDependencyMatrix() {
 		int[][] dependencyMatrix = new int[9][9];
-		for(int i=0;i<3;i++) {
+		for(int i=0;i<context.values.size();i++) {
 			String[] literals = context.values.get(i).split(" ");
 			for(int j=0;j<literals.length;j++) {
 				if(literals[j].equals("A"))
@@ -144,31 +155,20 @@ public class Client {
 					dependencyMatrix[i][8] = 1;
 			}
 		}
-		displayMatrix(dependencyMatrix);
 		return dependencyMatrix;
 	}
 	
-	public void notifyObserver(int[] depedentCells) {
-		for(int colIndex : depedentCells)
-			update(colIndex);
-	}
-	
-	public void displayMatrix(int[][] dependencyMatrix) {
-		for(int i=0;i<3;i++) {
-			for(int j=0;j<3;j++) {
-				System.out.print(dependencyMatrix[i][j]);
-			}
-			System.out.println();
-		}
+	public void notifyObserver() {
+		for(int colIndex : dependentCellsIndex)
+			update(dependentCellsIndex[colIndex]);
 	}
 	
 	public void update(int colIndex) {
-		int[][] arr = instantiateDependencyMatrix();
 		for(int row=0; row<9; row++) {
 			if(arr[row][colIndex] == 1) {
 				String expr = context.values.get(row);
 				Double result = eval.getResult(expr);
-				tableModel.setValueAt(result.toString(), 0, colIndex);
+				tableModel.setValueAt(result.toString(), 0, row);
 			}
 		}
 	}
