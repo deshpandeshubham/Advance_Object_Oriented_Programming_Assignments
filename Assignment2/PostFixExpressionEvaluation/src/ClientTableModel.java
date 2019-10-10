@@ -11,7 +11,6 @@ public class ClientTableModel extends AbstractTableModel {
 	
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		System.out.println("Value "+value+" set in context at index :" + col);
         Client.context.setValue(col, (String) value);
         fireTableCellUpdated(row, col);
     }

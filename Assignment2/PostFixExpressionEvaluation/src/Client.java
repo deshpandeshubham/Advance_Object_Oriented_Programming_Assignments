@@ -52,7 +52,6 @@ public class Client {
 					int i=0;
 					for(int key : previousValues.keySet()) {
 						if(!(context.values.get(key).equals(previousValues.get(key)))) {
-							System.out.println("Value changed at : " + key);
 							isCellValueChanged = true;
 							dependentCellsIndex[i] = key;
 							i++;
@@ -93,13 +92,10 @@ public class Client {
 	public void toggleValueView() {		
 		for(Integer key : context.values.keySet()) {
 			String value = context.getValue(key);
-			System.out.println("Cell Value -----> "+value+" at index :"+key);
 			context.expressionString.put(key, value);
 			if(value.contains(" ")) {
 				context.expressionString.put(key, value);
-				System.out.println("Value at "+key+" in expression map : "+ context.expressionString.get(key));
 				value = getValueExpression(value);
-				System.out.println("Value Expression After Conversion----->"+value);
 				Client.context.dependentCellsSet = new HashSet<String>();
 			}
 			Double res = eval.getResult(value.trim());
@@ -112,7 +108,6 @@ public class Client {
 	public void toggleEquationView() {
 		for(Integer key : context.expressionString.keySet()) {
 			String value = context.expressionString.get(key);
-			System.out.println("Cell Value----->"+value+"at index : "+key);
 			tableModel.setValueAt(value, 0, key);
 		}
 	}
