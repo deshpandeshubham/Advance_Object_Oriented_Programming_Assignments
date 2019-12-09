@@ -8,7 +8,7 @@ public class TextCharacter implements CharFlyWeight {
 	}
 
 	@Override
-	public void setFont(Font font) {
-		System.out.println("Character : " + this.charUnicode +"	"+"Font : "+font.toString().replace("java.awt.Font", "").replace("[", "").replace("]", ""));
+	public String setFont(Font font) {
+		return "Character : " + this.charUnicode +"	"+"Font : "+font.toString().replace("java.awt.Font", "").replace("[", "").replace("]", "");
 	}
 }

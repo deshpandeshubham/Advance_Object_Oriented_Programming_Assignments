@@ -9,7 +9,7 @@ public class CharacterFactory {
         TextCharacter textChar = charMap.get(charUnicode);
         if(textChar == null) {
             textChar = new TextCharacter(charUnicode);
-            charMap.put(charUnicode,textChar);
+            charMap.put(charUnicode, textChar);
         }
         return textChar;
     }
@@ -17,6 +17,6 @@ public class CharacterFactory {
     public static CharacterFactory getCharacterFactoryInstance(){
         if(charFactory == null)
             charFactory = new CharacterFactory();
-            return charFactory;
+        return charFactory;
     }
 }
