@@ -15,9 +15,11 @@ public abstract class SizeofUtil {
             if (avgSize < 0) {
                 i--;
                 if (retries-- < 0)
-                    throw new RuntimeException("The eden space is not large enough to hold all the objects.");
+                    throw new RuntimeException("The eden space is not large "
+                    		+ "enough to hold all the objects.");
             } else if (avgSize == 0) {
-                throw new RuntimeException("Object is not large enough to register, try turning off the TLAB with -XX:-UseTLAB");
+                throw new RuntimeException("Object is not large enough to register, "
+                		+ "try turning off the TLAB with -XX:-UseTLAB");
             } else {
                 sizes[i] = avgSize;
             }

@@ -34,11 +34,14 @@ public class WordProcessorTest {
 	//Memory Utilization Test
 	@Test
 	public void checkMemoryUsage() {
-		String text = "CS 635 Advanced Object-Oriented Design & Programming Fall Semester, 2018"
-	    			+ "Doc 17 Mediator, Flyweight, Facade, Demeter, Active Object Nov 19,"
-	    			+ "2019 Copyright ©, All rights reserved. 2019 SDSU & Roger Whitney, 5500 Campanile Drive, San Diego, CA 92182-7700 USA."
-	    			+ "OpenContent"
-	    			+ "(http://www.opencontent.org/opl.shtml) license defines the copyright on this document.";
+		String text = "CS 635 Advanced Object-Oriented Design & Programming Fall Semester,"
+				+ "2018 Doc 17 Mediator, Flyweight, Facade, Demeter, Active Object "
+				+ "Nov 19 2019 Copyright ©, All rights reserved. 2019 SDSU & "
+				+ "Roger Whitney, "
+				+ "5500 Campanile Drive, San Diego, CA 92182-7700 USA."
+    			+ "OpenContent"
+    			+ "(http://www.opencontent.org/opl.shtml) "
+    			+ "license defines the copyright on this document.";
 		char[] textArray = text.toCharArray();
 		
 		double noOfBytesWithoutFlyWeight = new SizeofUtil() {
@@ -61,7 +64,8 @@ public class WordProcessorTest {
 	            runArray.addRun(0, 145, fontOne); 
 	            runArray.addRun(145, 211, fontTwo); 
 	            for(int i = 0 ; i < textArray.length; i++) {
-	                CharacterFactory characterFactory = CharacterFactory.getCharacterFactoryInstance();
+	                CharacterFactory characterFactory = 
+	                		CharacterFactory.getCharacterFactoryInstance();
 	                TextCharacter textCharacter = characterFactory.getCharacter(textArray[i]); 
 	                Font characterFont = runArray.getFont(i);
 	                textCharacter.setFont(characterFont);
@@ -70,6 +74,8 @@ public class WordProcessorTest {
 	        }
         }.averageBytes();
         
-        assertTrue(noOfBytesWithFlyWeight < noOfBytesWithoutFlyWeight);		//Memory used by Word Processor with Fly-Weight will be less than that of without Fly-Weight
+        /*Memory used by Word Processor with Fly-Weight will be less than that 
+        of without Fly-Weight*/
+        assertTrue(noOfBytesWithFlyWeight < noOfBytesWithoutFlyWeight);		
 	}
 }

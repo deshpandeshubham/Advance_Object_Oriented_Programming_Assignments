@@ -3,7 +3,8 @@ import java.util.HashMap;
 public class CharacterFactory {
 	
 	private static CharacterFactory charFactory;
-	private HashMap<Character, TextCharacter> charMap = new HashMap<Character, TextCharacter>();
+	private HashMap<Character, TextCharacter> charMap = 
+			new HashMap<Character, TextCharacter>();
     
     public TextCharacter getCharacter(char charUnicode) {
         TextCharacter textChar = charMap.get(charUnicode);
