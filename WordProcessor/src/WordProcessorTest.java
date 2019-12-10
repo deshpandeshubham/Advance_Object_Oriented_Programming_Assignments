@@ -70,6 +70,6 @@ public class WordProcessorTest {
 	        }
         }.averageBytes();
         
-        assertTrue(noOfBytesWithFlyWeight < noOfBytesWithoutFlyWeight);
+        assertTrue(noOfBytesWithFlyWeight < noOfBytesWithoutFlyWeight);		//Memory used by Word Processor with Fly-Weight will be less than that of without Fly-Weight
 	}
 }

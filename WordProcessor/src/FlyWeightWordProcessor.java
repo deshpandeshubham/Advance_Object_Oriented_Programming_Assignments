@@ -27,7 +27,5 @@ public class FlyWeightWordProcessor {
 	            return 1;
 	        }
         }.averageBytes();
-        
-        System.out.println("Memory : " + noOfBytes + " Bytes");
     }
 }
