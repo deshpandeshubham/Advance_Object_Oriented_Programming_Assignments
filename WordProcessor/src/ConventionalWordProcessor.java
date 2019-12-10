@@ -5,8 +5,9 @@ public class ConventionalWordProcessor {
 
     public static void main(String args[]) {
         double noOfBytes = new SizeofUtil() {
-        	String text = "CS 635 Advanced Object-Oriented Design & Programming Fall Semester,"
-	    				+ "2018 Doc 17 Mediator, Flyweight, Facade, Demeter, Active Object "
+        	String text = "CS 635 Advanced Object-Oriented Design & Programming "
+        				+ "Fall Semester, 2018 "
+        				+ "Doc 17 Mediator, Flyweight, Facade, Demeter, Active Object "
 	    				+ "Nov 19 2019 Copyright ©, All rights reserved. 2019 SDSU & "
 	    				+ "Roger Whitney, "
 	    				+ "5500 Campanile Drive, San Diego, CA 92182-7700 USA."
@@ -27,8 +28,6 @@ public class ConventionalWordProcessor {
             	return 1;
         	}
         }.averageBytes();
-        
-        System.out.println("Memory : " + noOfBytes);
     }
 }
 
